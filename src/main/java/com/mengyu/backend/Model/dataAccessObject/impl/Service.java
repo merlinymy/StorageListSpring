@@ -4,6 +4,8 @@ import com.mengyu.backend.Model.dataAccessObject.StorageService;
 import com.mengyu.backend.Model.dataValueObject.StorageData;
 import com.mengyu.backend.repository.ItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,16 +24,19 @@ public class Service implements StorageService {
     }
 
     @Override
-    public StorageData saveRecord(StorageData storageData) {
+    public StorageData updateRecord(@PathVariable String id, @RequestBody StorageData storageData) {
+        System.out.println("entry updated");
+        StorageData old = itemRepo.findById(id).get();
+        System.out.println("item " + old.getItemName() + " updated");
         return itemRepo.save(storageData);
     }
 
     @Override
-    public StorageData findId(String id) {
+    public StorageData findById(String id) {
         try {
             return itemRepo.findById(id).get();
         } catch (NoSuchElementException noSuchElementException) {
-            System.out.println("Id#: " + id + "does not match anything in the database.");
+            System.out.println("Id#: " + id + " does not match anything in the database.");
             return null;
         }
     }
@@ -42,7 +47,14 @@ public class Service implements StorageService {
             StorageData item = itemRepo.findById(id).get();
             System.out.println("Item " + item.getItemName() + " removed from the database.");
         } catch (NoSuchElementException noSuchElementException) {
-            System.out.println("Id#: " + id + "does not exists");
+            System.out.println("Id#: " + id + " does not exists");
         }
+    }
+
+
+    @Override
+    public StorageData createNew(StorageData storageData) {
+        System.out.println("item added");
+        return itemRepo.save(storageData);
     }
 }
