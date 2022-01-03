@@ -9,7 +9,6 @@ import org.springframework.data.annotation.Id;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class StorageData {
     @Id
     private String id;
