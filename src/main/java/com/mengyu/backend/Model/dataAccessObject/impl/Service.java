@@ -4,6 +4,7 @@ import com.mengyu.backend.Model.dataAccessObject.StorageService;
 import com.mengyu.backend.Model.dataValueObject.StorageData;
 import com.mengyu.backend.repository.ItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -19,8 +20,8 @@ public class Service implements StorageService {
     private ItemRepo itemRepo;
 
     @Override
-    public List<StorageData> getAllRecords() {
-        return itemRepo.findAll();
+    public List<StorageData> findRecordsByNameOrderByExpDate(String itemName) {
+        return itemRepo.findAllByItemNameOrderByExpDate(itemName);
     }
 
     @Override
@@ -56,5 +57,10 @@ public class Service implements StorageService {
     public StorageData createNew(StorageData storageData) {
         System.out.println("item added");
         return itemRepo.save(storageData);
+    }
+
+    @Override
+    public List<StorageData> findAllOrderByExpDate() {
+        return itemRepo.findAllByOrderByExpDate();
     }
 }

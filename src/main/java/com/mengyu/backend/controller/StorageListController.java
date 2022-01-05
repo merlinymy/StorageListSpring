@@ -15,14 +15,22 @@ public class StorageListController {
     private Service service;
 
 
-    @GetMapping()
-    public List<StorageData> getAllEntries() {
-        return service.getAllRecords();
+    @GetMapping("/findAll")
+    public List<StorageData> getAllEntries(@RequestParam(required = false) String itemName) {
+        if (itemName == null) {
+            return service.findAllOrderByExpDate();
+        } else {
+            return service.findRecordsByNameOrderByExpDate(itemName);
+        }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/find/{id}")
     public StorageData getItemByData(@PathVariable String id) {
         return service.findById(id);
+    }
+    @GetMapping("/find")
+    public List<StorageData> findByNameOrderByDate(@RequestParam String itemName) {
+        return service.findRecordsByNameOrderByExpDate(itemName);
     }
 
     @PostMapping("/create")
@@ -39,6 +47,4 @@ public class StorageListController {
     public StorageData update(@PathVariable String id, @RequestBody StorageData storageData) {
         return service.updateRecord(id, storageData);
     }
-
-
 }
